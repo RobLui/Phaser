@@ -17,7 +17,6 @@ var score = 0;
 // ------------------------ SCORE TEXT ------------------------
 var scoreText;
 
-
 // Preload loads everything needed in the game before other code is applied where certain stuff is needed like images etc.
 function preload() {
     game.load.image('sky', 'assets/sky.png');
