@@ -1,4 +1,4 @@
-//GAME
+//GAME - testing in SAFARI , CHROME plugin on mac anyone???
 
 // 800 & 600 determine how large the canvas size will be
 // Phaser.auto determines the render mode -- GameDiv is the dom element where the game gets placed in
@@ -8,12 +8,14 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'GameDiv', {
     create: create,
     update: update
 });
-var spacefield;
-var background_x;
-var cursors;
-var player;
 
-//MAIN STATE (array of functions)
+var platforms;
+var cursors;
+
+
+
+
+// Preload loads everything needed in the game before other code is applied where certain stuff is needed like images etc.
 function preload() {
 
     game.load.image('sky', 'assets/sky.png');
@@ -21,11 +23,11 @@ function preload() {
     game.load.image('star', 'assets/star.png');
     game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
 
+
 }
 
 function create() {
 
-    var platforms;
 
     // Enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -48,6 +50,7 @@ function create() {
     // This stops it from falling away when you jump on it
     ground.body.immovable = true;
 
+    // ------ TWO LEDGES ------ (zoals in Super Mario Bros fzo :), dingen waar je op kan springen
     // Create two ledges
     var ledge = platforms.create(400, 400, 'ground');
 
@@ -59,8 +62,60 @@ function create() {
 
     // This also stops it from falling away when you jump on it
     ledge.body.immovable = true;
-}
-//update will happen every frame -> bv een bewegend karakter
-function update() {
+
+    // ------ PLAYER ------
+    // The player and its settings
+    player = game.add.sprite(32, game.world.height - 150, 'dude');
+
+    // Enable Physics on the player
+    game.physics.arcade.enable(player);
+
+    // Player physics properties
+    player.body.bounce.y = 0.2;
+    player.body.gravity.y = 300;
+    player.body.collideWorldBounds = true;
+
+    // The two animations on the player, walk left & right
+    player.animations.add('left', [0, 1, 2, 3], 10, true);
+    player.animations.add('right', [5, 6, 7, 8], 10, true);
+
 
 }
+
+function update() {
+
+    var hitPlatform = game.physics.arcade.collide(player, platforms);
+    cursors = game.input.keyboard.createCursorKeys();
+
+    //  Reset the players velocity (movement)
+    player.body.velocity.x = 0;
+
+    if (cursors.left.isDown) {
+        //  Move to the left
+        player.body.velocity.x = -150;
+
+        player.animations.play('left');
+    } else if (cursors.right.isDown) {
+        //  Move to the right
+        player.body.velocity.x = 150;
+
+        player.animations.play('right');
+    } else {
+        //  Stand still
+        player.animations.stop();
+
+        player.frame = 4;
+    }
+
+    //  Allow the player to jump if they are touching the ground.
+    if (cursors.up.isDown && player.body.touching.down && hitPlatform) {
+        player.body.velocity.y = -350;
+    }
+
+}
+
+
+
+
+// SIDE INFO!
+// Groups -> In groups you can check for collisions between objects
