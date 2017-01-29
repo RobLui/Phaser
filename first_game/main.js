@@ -8,9 +8,15 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'GameDiv', {
     create: create,
     update: update
 });
-
+// ------------------------ OMGEVING ------------------------
 var platforms;
+// ------------------------ MOVEMENT ------------------------
 var cursors;
+// ------------------------ SCORE ------------------------
+var score = 0;
+// ------------------------ SCORE TEXT ------------------------
+var scoreText;
+
 
 // Preload loads everything needed in the game before other code is applied where certain stuff is needed like images etc.
 function preload() {
@@ -87,7 +93,12 @@ function create() {
         star.body.bounce.y = 0.7 + Math.random() * 0.2;
     }
 
+    scoreText = game.add.text(16, 16, 'score: 0', {
+        fontSize: '32px',
+        fill: '#000'
+    });
 }
+
 // Update performs each frame
 function update() {
 
@@ -123,14 +134,27 @@ function update() {
     // ------------------------ MOVE UP ------------------------
     //  Allow the player to jump if they are touching the ground.
     if (cursors.up.isDown && player.body.touching.down && hitPlatform) {
-        player.body.velocity.y = -350;
+        player.body.velocity.y = -300;
     }
 
     // ------------------------ STARS ------------------------
     // Check for collistion between the player and the platform
     game.physics.arcade.collide(stars, platforms);
-    // Check for collision between player & stars
-    game.physics.arcade.collide(stars, player);
+
+
+    function collectStar(player, star) {
+        // Removes the star from the screen
+        star.kill();
+        //  Add and update the score
+        score += 1;
+        scoreText.text = 'Score: ' + score;
+    }
+
+    // Check for overlapping between the player & stars instead off collision detection - If overlap happens apply function collectStar
+    game.physics.arcade.overlap(player, stars, collectStar, null, this);
+
+    //--- Check for collision between player & stars
+    //--- game.physics.arcade.collide(stars, player);
 }
 
 
