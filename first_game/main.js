@@ -12,23 +12,15 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'GameDiv', {
 var platforms;
 var cursors;
 
-
-
-
 // Preload loads everything needed in the game before other code is applied where certain stuff is needed like images etc.
 function preload() {
-
     game.load.image('sky', 'assets/sky.png');
     game.load.image('ground', 'assets/platform.png');
     game.load.image('star', 'assets/star.png');
     game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
-
-
 }
-
+// Create applies once, at the start, and ?if called in actions?
 function create() {
-
-
     // Enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -50,7 +42,8 @@ function create() {
     // This stops it from falling away when you jump on it
     ground.body.immovable = true;
 
-    // ------ TWO LEDGES ------ (zoals in Super Mario Bros fzo :), dingen waar je op kan springen
+    // ------------------------ TWO LEDGES ------------------------
+    // (zoals in Super Mario Bros fzo, dingen waar je op kan springen)
     // Create two ledges
     var ledge = platforms.create(400, 400, 'ground');
 
@@ -63,7 +56,7 @@ function create() {
     // This also stops it from falling away when you jump on it
     ledge.body.immovable = true;
 
-    // ------ PLAYER ------
+    // ------------------------ PLAYER ------------------------
     // The player and its settings
     player = game.add.sprite(32, game.world.height - 150, 'dude');
 
@@ -79,42 +72,66 @@ function create() {
     player.animations.add('left', [0, 1, 2, 3], 10, true);
     player.animations.add('right', [5, 6, 7, 8], 10, true);
 
+    // ------------------------ STARS ------------------------
+    // Add a new group of stars
+    stars = game.add.group();
+    // Give the stars physics so they can collide with other gameObjects
+    stars.enableBody = true;
+    // Add 12 stars
+    for (var i = 0; i < 12; i++) {
+        //  Create a star inside of the 'stars' group
+        var star = stars.create(i * 70, 0, 'star');
+        // The greater the gravity is, the faster stars will fall
+        star.body.gravity.y = 25;
+        // Give each star a small bounce value if it collides -> bounce up
+        star.body.bounce.y = 0.7 + Math.random() * 0.2;
+    }
 
 }
-
+// Update performs each frame
 function update() {
 
     var hitPlatform = game.physics.arcade.collide(player, platforms);
     cursors = game.input.keyboard.createCursorKeys();
 
-    //  Reset the players velocity (movement)
+    // Reset the players velocity (movement)
     player.body.velocity.x = 0;
 
+    // ------------------------ MOVE RIGHT & LEFT ------------------------
+    // Check if the left arrow key is down
     if (cursors.left.isDown) {
-        //  Move to the left
-        player.body.velocity.x = -150;
-
+        // Move to the left - The number manages the speed of the action
+        player.body.velocity.x = -300;
+        // Play the "left" animation
         player.animations.play('left');
-    } else if (cursors.right.isDown) {
-        //  Move to the right
-        player.body.velocity.x = 150;
-
+    }
+    // Check if the right arrow key is down
+    else if (cursors.right.isDown) {
+        // Move to the right - The number manages the speed of the action
+        player.body.velocity.x = 300;
+        // Play the "right" animation
         player.animations.play('right');
-    } else {
-        //  Stand still
+    }
+    // If no key is down at all..
+    else {
+        // Stand still, if no key is pressed
         player.animations.stop();
-
+        // Amount of frames to be played when standing still
         player.frame = 4;
     }
 
+    // ------------------------ MOVE UP ------------------------
     //  Allow the player to jump if they are touching the ground.
     if (cursors.up.isDown && player.body.touching.down && hitPlatform) {
         player.body.velocity.y = -350;
     }
 
+    // ------------------------ STARS ------------------------
+    // Check for collistion between the player and the platform
+    game.physics.arcade.collide(stars, platforms);
+    // Check for collision between player & stars
+    game.physics.arcade.collide(stars, player);
 }
-
-
 
 
 // SIDE INFO!
