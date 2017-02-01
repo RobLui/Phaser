@@ -1,5 +1,4 @@
 # Bootcamp Phaser
----
 Standard template for phaser projects
 ---
 
@@ -8,7 +7,7 @@ Template: [Template](https://github.com/RobLui/Phaser/tree/master/_standard)
 Based on [2D / empty game](http://www.lessmilk.com/tutorial/2d-platformer-phaser)
 ***
 
-Game creations 
+Game creations
 ---
 First game: [R. Photon](https://github.com/RobLui/Phaser/tree/master/first_game)
 <br>
