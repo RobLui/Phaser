@@ -8,6 +8,8 @@ Template: [Template](https://github.com/RobLui/Phaser/tree/master/_standard)
 Based on [2D / empty game](http://www.lessmilk.com/tutorial/2d-platformer-phaser)
 ***
 
+Game creations 
+---
 First game: [R. Photon](https://github.com/RobLui/Phaser/tree/master/first_game)
 <br>
 Based on [Photonstorm](http://phaser.io/tutorials/making-your-first-phaser-game)
