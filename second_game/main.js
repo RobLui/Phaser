@@ -13,6 +13,9 @@ var mainState = {
 
         // Load the pipe sprite
         game.load.image('pipe', 'assets/pipe.png');
+
+        // Load the jump audio
+        game.load.audio('jump', 'assets/jump.wav');
     },
     create: function() { // This function is called after the preload function, here we set up the game, display sprites, etc.
 
@@ -31,6 +34,9 @@ var mainState = {
         // Add gravity to the bird to make it fall
         this.bird.body.gravity.y = 1000;
 
+        // Move the anchor to the left and downward, makes it look more natural (like a bird)
+        this.bird.anchor.setTo(-0.2, 0.5);
+
         // Call the 'jump' function when the spacekey is hit
         var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         spaceKey.onDown.add(this.jump, this);
@@ -48,22 +54,48 @@ var mainState = {
             font: "30px Arial",
             fill: "#ffffff"
         });
+        // Add sound creation
+        this.jumpSound = game.add.audio('jump');
     },
     update: function() { // This function is called 60 times per second, it contains the game's logic
+
+        // If the bird overlaps a pipe.. (removed restart game, wich was the first code written here"
+        game.physics.arcade.overlap(this.bird, this.pipes, this.hitPipe, null, this);
 
         // If the bird is out of the screen (too high or too low), call the 'restartGame' function
         if (this.bird.y < 0 || this.bird.y > 490) {
             this.restartGame();
         }
-        // If the bird overlaps a pipe..
-        game.physics.arcade.overlap(this.bird, this.pipes, this.restartGame, null, this);
 
         // Check if the bird's angle is lower than 20 deg
         if (this.bird.angle < 20)
         // if so, up the angle by one
             this.bird.angle += 1;
     },
+    hitPipe: function() {
+        // If the bird has already hit a pipe, do nothing, it means the bird is already falling off the screen
+        if (this.bird.alive == false)
+            return;
+
+        // Set the alive property of the bird to false
+        this.bird.alive = false;
+
+        // Prevent new pipes from appearing
+        game.time.events.remove(this.timer);
+
+        // Go through all the pipes, and stop their movement
+        this.pipes.forEach(function(p) {
+            p.body.velocity.x = 0;
+        }, this);
+    },
     jump: function() { // Make the bird jump
+
+        // Check if the bird is dead (if he jumped to something, if he's falling to death already, unable the chance to jump further)
+        if (this.bird.alive == false)
+            return;
+
+        // Play the sound whenever jumped
+        this.jumpSound.play();
 
         // Add a vertical velocity to the bird
         this.bird.body.velocity.y = -350;
@@ -71,19 +103,10 @@ var mainState = {
         // Create an animation on the bird
         var animation = game.add.tween(this.bird);
 
-        // Change the angle of the bird to -20° in 100 milliseconds
-        animation.to({
-            angle: -20
-        }, 100);
-
-        // Start the animation
-        animation.start();
-        // A tween makes it possible to alter one or multiple values over a period of time
+        // A tween makes it possible to alter one or multiple values over a period of time, change the angle of the bird to -20° in 100 milliseconds, start the animation
         game.add.tween(this.bird).to({
             angle: -20
         }, 100).start();
-        // Move the anchor to the left and downward, makes it look more natural (like a bird)
-        this.bird.anchor.setTo(-0.2, 0.5);
     },
     restartGame: function() { // Restart the game
 
@@ -131,3 +154,4 @@ game.state.add('main', mainState); // Add the 'mainState' and call it 'main'
 
 game.state.start('main'); // Start the state to actually start the game
 start('main'); // Start the state to actually start the game
+game
