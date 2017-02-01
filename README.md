@@ -13,7 +13,7 @@ First game: [R. Photon](https://github.com/RobLui/Phaser/tree/master/first_game)
 Based on [Photonstorm](http://phaser.io/tutorials/making-your-first-phaser-game)
 ***
 
-Second game: [R. Bird](https://github.com/RobLui/Phaser/tree/master/first_game)
+Second game: [R. Bird](https://github.com/RobLui/Phaser/tree/master/second_game)
 <br>
 Based on [Flappy Bird](http://www.lessmilk.com/tutorial/flappy-bird-phaser-1)
 ***
