@@ -57,11 +57,33 @@ var mainState = {
         }
         // If the bird overlaps a pipe..
         game.physics.arcade.overlap(this.bird, this.pipes, this.restartGame, null, this);
+
+        // Check if the bird's angle is lower than 20 deg
+        if (this.bird.angle < 20)
+        // if so, up the angle by one
+            this.bird.angle += 1;
     },
     jump: function() { // Make the bird jump
 
         // Add a vertical velocity to the bird
         this.bird.body.velocity.y = -350;
+
+        // Create an animation on the bird
+        var animation = game.add.tween(this.bird);
+
+        // Change the angle of the bird to -20° in 100 milliseconds
+        animation.to({
+            angle: -20
+        }, 100);
+
+        // Start the animation
+        animation.start();
+        // A tween makes it possible to alter one or multiple values over a period of time
+        game.add.tween(this.bird).to({
+            angle: -20
+        }, 100).start();
+        // Move the anchor to the left and downward, makes it look more natural (like a bird)
+        this.bird.anchor.setTo(-0.2, 0.5);
     },
     restartGame: function() { // Restart the game
 
@@ -108,3 +130,4 @@ var mainState = {
 game.state.add('main', mainState); // Add the 'mainState' and call it 'main'
 
 game.state.start('main'); // Start the state to actually start the game
+start('main'); // Start the state to actually start the game
