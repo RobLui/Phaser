@@ -50,6 +50,7 @@ var mainState = {
             '!                 o  x',
             '!         o          x',
             '!                    x',
+            '!                    x',
             '!     o   !    x     x',
             'xxxxxxxxxxxxxxxx!!!!!x',
         ];
@@ -59,7 +60,7 @@ var mainState = {
 
                 // Create a WALL and add it to the 'walls' group
                 if (level[i][j] == 'x') {
-                    var wall = game.add.sprite(30 + 20 * j, 30 + 20 * i, 'wall');
+                    var wall = game.add.sprite(20 + 20 * j, 30 + 20 * i, 'wall');
                     this.walls.add(wall);
                     // Set immovable to true, so they won't start falling apart if the player walks on them
                     wall.body.immovable = true;
@@ -67,17 +68,23 @@ var mainState = {
 
                 // Create a COIN and add it to the 'coins' group
                 else if (level[i][j] == 'o') {
-                    var coin = game.add.sprite(30 + 20 * j, 30 + 20 * i, 'coin');
+                    var coin = game.add.sprite(10 + 20 * j, 0 + 20 * i, 'coin');
                     this.coins.add(coin);
                 }
 
                 // Create an ENEMY and add it to the 'enemies' group
                 else if (level[i][j] == '!') {
-                    var enemy = game.add.sprite(30 + 20 * j, 30 + 20 * i, 'enemy');
+                    var enemy = game.add.sprite(20 + 20 * j, 20 + 20 * i, 'enemy');
                     this.enemies.add(enemy);
                 }
             }
         }
+    },
+    takeCoin: function(player, coin) { // Remove or "kill" a coin
+        coin.kill();
+    },
+    restart: function() { // Restart the game
+        game.state.start('main');
     },
     // Update runs 60 frames/sec
     update: function() {
@@ -89,9 +96,8 @@ var mainState = {
             this.player.body.velocity.x = 0;
 
         // Make the player jump if he is touching the ground, only enable it when its on the ground
-        if (this.spaceKey && this.player.body.touching.down) {
+        if (this.spaceBar && this.player.body.touching.down)
             this.player.body.velocity.y = -250;
-        }
 
         // -------- COLLISION DETECTION --------
         // Make the player and the walls collide
@@ -102,14 +108,6 @@ var mainState = {
 
         // Call the 'restart' function when the player touches the enemy
         game.physics.arcade.overlap(this.player, this.enemies, this.restart, null, this);
-    },
-    // Remove or "kill" a coin
-    takeCoin: function(player, coin) {
-        coin.kill();
-    },
-    // Restart the game
-    restart: function() {
-        game.state.start('main');
     }
 };
 
