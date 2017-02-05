@@ -8,6 +8,7 @@ SETUP
 (make sure the phaser framework is put in here)
 - Create an assets folder (optional, but good for maintaining overview)
 ***
+
 BASIC CODE
 - Initialize a new game
   - Example: var game = new Phaser.Game(600, 400);
