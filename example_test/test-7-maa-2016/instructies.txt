@@ -1,0 +1,12 @@
+- Maak een game met als afmetingen 500x700 en met deze 2 states: Preload & Metronome en start de "Preload" state.
+- Laad in de Preload State alle afbeeldingen & sounds. Start de “Metronome” state van zodra alles geladen is.
+- Plaats de basis van de metronoom (metronome-base.png)
+- Plaats de arm vab de metronoom (metronome-arm.png)
+- Plaats de knop (red-button) en zorg ervoor dat de metronoom start van zodra je op de knop klikt.
+- Om de metronoom te laten bewegen moet je eerst de arm van 0 naar -25 graden brengen. Gebruik hiervoor een tween (die maar 1 keer afspeelt).
+- Vervolgens (wanneer de eerste tween gedaan is) gebruik je een tweede tween om de heen en weer beweging van de arm te animeren. Deze moet oneindig lang herhalen.
+- Speel telkens als de arm een uiterste punt bereikt (-25 graden en 25 graden) het tik geluid af (metronome-tick).
+  
+  Gegevens:
+  De afbeelding red-button.png bevat 3 toestanden. Het is eigenlijk een spritesheet waarbij elke toestand 110 x 35 pixels groot is.
+  Bekijk goed de methode om een button aan te maken. Je kan deze verschillende toestanden makkelijk specifieren zodat je een hover en down effect krijgt.

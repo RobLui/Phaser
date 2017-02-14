@@ -1,0 +1,8 @@
+- Maak een game met deze 2 states: Peload & PlayGame
+- Preload in de Preload State alle afbeeldingen & sounds. Start de “PlayGame” state van zodra alles geladen is.
+- Plaats elke keer dat er op de letter "W" wordt gedrukt de animatie "water.png" op een willekeurige plaats en speel het "drop"-geluid 1 keer af.
+- Plaats elke keer dat er op de letter "B" wordt gedrukt de animatie "explosion.png" op een willekeurige plaats en speel het "bomb"-geluid 1 keer af.
+  
+  Gegevens:
+  Elke frame van de animatie van de explosie sprite sheet is 50 x 128 pixels.
+  Elke frame van de animatie van de water sprite sheet is 64 x 64 pixels.

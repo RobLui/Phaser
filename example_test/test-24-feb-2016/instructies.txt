@@ -1,0 +1,7 @@
+- Maak een game met deze 3 states: Preload, Splash & PlayGame
+- Preload in de Preload State alle afbeeldingen & sounds. Start de “Splash” state van zodra alles geladen is.
+- Plaats de afbeelding “btn.png” als button in het midden van het game scherm.
+- Start de “PlayGame” state wanneer er op deze knop wordt gedrukt
+- Speel het “start_sound”-geluid 1 keer af.
+- Speel het “eat_sound”-geluid oneindig af (in loop)
+- plaats het spook en de pacman en laat hun animaties afspelen.
