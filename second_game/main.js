@@ -154,4 +154,3 @@ game.state.add('main', mainState); // Add the 'mainState' and call it 'main'
 
 game.state.start('main'); // Start the state to actually start the game
 start('main'); // Start the state to actually start the game
-game
