@@ -2,9 +2,7 @@ var game = new Phaser.Game(800, 600);
 
 // Array for different states
 var MyGame = {};
-// preloadState
 MyGame.preloadState = function(game) {};
-// playGameState
 MyGame.playGameState = function(game) {};
 
 var max_y = 600;

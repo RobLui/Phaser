@@ -1,9 +1,8 @@
 var game = new Phaser.Game(800, 600);
 
+// Array for different states
 var MyGame = {};
-// PreloadState
 MyGame.preloadState = function(game) {};
-// PlayGameState
 MyGame.playGameState = function(game) {};
 
 // Preload proto
