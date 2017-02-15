@@ -1,72 +1,66 @@
-// - Maak een game met deze 2 states: Preload & PlayGame
+var game = new Phaser.Game(800, 600);
 
-// - Preload in de Preload State alle afbeeldingen. Start de “PlayGame” state van zodra alles geladen is.
+var MyGame = {};
+// PreloadState
+MyGame.preloadState = function(game) {};
+// PlayGameState
+MyGame.playGameState = function(game) {};
 
-// - Plaats bij elke muisklik een nieuwe krat ("crate.png") op de plaats van muis cursor.
-
-// - Plaats op dezelfde plaats een explosie animatie ("explosion.png").
-
-// - Laat elke nieuwe krat vertrekken in een willekeurige richting met een willekeurige snelheid
-// - Zorg ervoor dat de kratten op de rand van de toepassing terugkaatsen. Gebruik hiervoor Arcade Physics.
-// - Zorg ervoor dat de kratten - wanneer ze elkaar raken - terugkaatsen.
-
-// Gegevens:
-// Elke frame van de animatie van de explosie sprite sheet is 128 x 128 pixels.
-
-
-// Init the game
-var game = new Phaser.Game(600, 400);
-
-// Create the state that will contain the whole game
-var mainState = {
-    // Preload the assets (.png, .wav, ..)
+// Preload proto
+MyGame.preloadState.prototype = {
     preload: function() {
-        // Load the crate image
-        game.load.image('crate', 'assets/crate.png');
-        // Load the explosion sprite
-        game.load.spritesheet('explosion', 'assets/explosion.png', 120, 120);
+        this.load.image('black', 'assets/black.jpg');
+        this.load.image('crate', 'assets/crate.png');
+        this.load.spritesheet('explosion', 'assets/explosion.png', 128, 128, 20);
     },
-    create: function() { // Create starts if preload is done
-        // Start the physics system
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-        // Apply gravity in the y direction
-        game.physics.arcade.gravity.y = 300;
-        //Create a group for crates
-        crateGroup = game.add.group();
-        // Enable the body on the group of crates
-        crateGroup.enableBody = true;
-        // Specify wich body type they get
-        crateGroup.physicsBodyType = Phaser.Physics.ARCADE;
-
-    },
-    update: function() {
-        PlayGame();
+    create: function() {
+        // start the playGame state once the preload is done
+        this.state.start('playGame');
     }
 };
+// Playgame proto
+MyGame.playGameState.prototype = {
+    create: function() {
+        var black = this.add.sprite(0, 0, 'black');
+        black.anchor.set(0.5);
+        black.inputEnabled = true;
+        black.events.onInputDown.add(this.addCrate, this);
 
+    },
+    addCrate: function() {
+        var xPos = game.input.mousePointer.x;
+        var yPos = game.input.mousePointer.y;
 
-function PlayGame() {
-    // Check if there is clicked / if the cursor is being held down
-    if (game.input.activePointer.isDown) {
-        // Create crate
-        var pos_y = game.input.y;
-        var pos_x = game.input.x;
-        // Add the crate at specific positions (x and y location off the cursor)
-        var crate = game.add.sprite(pos_x, pos_y, 'crate');
-        // Add the explosion at specific position
-        var explosion = game.add.sprite(pos_x, pos_y, 'explosion');
-        explosion.animations.add('explosion', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 1, true);
-        explosion.play('explosion'); // plays all the frames, at 1 frame per second, looping.
-        // enable gravity on the crate
+        var crate = this.add.sprite(xPos, yPos, 'crate');
         game.physics.arcade.enable(crate);
-        game.physics.arcade.enable(explosion);
-        // Give it a spcecific gravity
-        crate.body.gravity.y = 200;
-        explosion.body.gravity.y = 200;
-    }
-}
-// Preload
-game.state.add('main', mainState);
 
-// Start the game
-game.state.start('main');
+        crate.anchor.set(0.5);
+        // enable physics on the crate
+        this.physics.enable(crate, Phaser.Physics.ARCADE);
+        // Add collision detection with the boundaries of the black img
+
+        crate.body.collideWorldBounds = true;
+
+        crate.body.bounce.setTo(1, 1);
+
+        var randomXY;
+        var randomG = game.rnd.integerInRange(-200, 200);
+        var randomOnzZerro = game.rnd.integerInRange(0, 1);
+        if (randomOnzZerro === 0) {
+            crate.body.velocity.y = randomG;
+        } else {
+            crate.body.velocity.x = randomG;
+        }
+
+        var explosion = this.add.sprite(xPos, yPos, 'explosion');
+        explosion.anchor.set(0.5);
+        explosion.animations.add('explosionAnimation');
+        explosion.animations.play('explosionAnimation', 20);
+    }
+};
+// Add the preload state
+game.state.add('preloadState', MyGame.preloadState);
+// Add the playgame state
+game.state.add('playGame', MyGame.playGameState);
+// start the preload state
+game.state.start('preloadState');
