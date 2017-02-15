@@ -17,7 +17,7 @@ var mainState = {
         var base = this.add.sprite(game.world.centerX, game.world.centerY, 'base');
         // Set the base anchor to the middle
         base.anchor.set(0.5);
-        //
+        // Add the arm sprite to the world
         this.arm = this.add.sprite(game.world.centerX, game.world.centerY + 200, 'arm');
         // Set x and y anchor points - Starts or ends on the bottom
         this.arm.anchor.set(0.5, 1);

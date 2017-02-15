@@ -49,10 +49,7 @@ MyGame.playGameState.prototype = {
         pacman.animations.play('pacmanAnimation', 10, true, true);
         ghost.animations.play('ghostAnimation', 10, true, true);
 
-        this.sound.play('eat_sound');
-
-        var eat = this.sound.play('eat_sound');
-        eat.loopFull();
+        this.sound.play('eat_sound').loopFull();;
     }
 };
 // Add all different kind of gameStates
@@ -62,3 +59,4 @@ game.state.add('playGame', MyGame.playGameState);
 
 // Start the preload state
 game.state.start('preload');
+//x
